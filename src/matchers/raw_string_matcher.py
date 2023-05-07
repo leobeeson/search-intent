@@ -6,9 +6,19 @@ class RawStringMatcher:
         self.query_index = query_index
 
 
-    def match(self, text):
-        return self.query_index.get(text, None)
+    def match(self, query):
+        return self.query_index.get(query, None)
 
 
-    def add_query(self, text, category):
-        self.query_index[text] = category
+    def add_query(self, query, category):
+        self.query_index[query] = category
+
+
+    def remove_query(self, query):
+        if query in self.query_index:
+            del self.query_index[query]
+
+
+if __name__ == "__main__":
+    raw_string_matcher = RawStringMatcher({"sample search query": 235})
+    raw_string_matcher.remove_query("non existent search query")
