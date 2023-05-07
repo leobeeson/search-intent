@@ -18,3 +18,8 @@ def test_raw_string_matcher(raw_string_matcher):
 
 def test_raw_string_matcher_no_match(raw_string_matcher):
     assert raw_string_matcher.match("no match") is None
+
+
+def test_raw_string_matcher_add_query(raw_string_matcher):
+    raw_string_matcher.add_query("another sample search query", 357)
+    assert raw_string_matcher.match("another sample search query") == 357
