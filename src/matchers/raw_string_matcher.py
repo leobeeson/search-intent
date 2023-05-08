@@ -21,4 +21,4 @@ class RawStringMatcher:
 
 if __name__ == "__main__":
     raw_string_matcher = RawStringMatcher({"sample search query": 235})
-    raw_string_matcher.remove_query("non existent search query")
+    raw_string_matcher.match(None)
