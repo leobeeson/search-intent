@@ -1,20 +1,30 @@
 import pytest
+from src.classification_pipeline import ClassificationPipeline
 from src.matchers.raw_string_matcher import RawStringMatcher
 
 
+@pytest.fixture
+def query_index():
+    return {"sample search query": 235}
+
+
+@pytest.fixture
+def raw_string_matcher(query_index):
+    return RawStringMatcher(query_index)
+
+
+@pytest.fixture
+def classification_pipeline(query_index):
+    return ClassificationPipeline(query_index)
+
+
 class TestClassificationPipeline:
-    pass
+
+    def test_classification_pipeline_returns_none_when_query_is_none(self, classification_pipeline):
+        assert classification_pipeline.classify(None) is None        
 
 
 class TestRawStringMatcher:
-
-    @pytest.fixture
-    def matches(self):
-        return {"sample search query": 235}
-
-    @pytest.fixture
-    def raw_string_matcher(self, matches):
-        return RawStringMatcher(matches)
 
     def test_raw_string_matcher(self, raw_string_matcher):
         assert raw_string_matcher.match("sample search query") == 235
