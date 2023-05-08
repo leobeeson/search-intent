@@ -2,7 +2,7 @@ import pytest
 import csv
 
 
-from src.indexers.full_text_indexer import FullTextIndexer
+from src.indexers.labelled_data_set import LabelledDataSet
 from src.classifiers.classification_pipeline import ClassificationPipeline
 from src.matchers.raw_string_matcher import RawStringMatcher
 
@@ -24,6 +24,12 @@ def classification_pipeline(query_index):
 
 class TestClassificationPipeline:
 
+    def test_classification_pipeline_returns_category_when_query_exists_in_index(self, classification_pipeline):
+        assert classification_pipeline.classify("sample search query") == 235
+    
+    def test_classification_pipeline_returns_none_when_query_does_not_exist_in_index(self, classification_pipeline):
+        assert classification_pipeline.classify("no match") is None
+    
     def test_classification_pipeline_returns_none_when_query_is_none(self, classification_pipeline):
         assert classification_pipeline.classify(None) is None        
 
@@ -67,11 +73,11 @@ class TestFullTextIndexer:
 
     @pytest.fixture
     def full_text_indexer_with_data(self, temp_csv):
-        return FullTextIndexer(temp_csv)
+        return LabelledDataSet(temp_csv)
     
     @pytest.fixture
     def full_text_indexer_without_data(self, empty_temp_csv):
-        return FullTextIndexer(empty_temp_csv)
+        return LabelledDataSet(empty_temp_csv)
 
     def test_full_text_indexer_when_data_has_rows(self, full_text_indexer_with_data):
         expected = {"sample search query": 257, "another sample search query": 357}
@@ -82,5 +88,5 @@ class TestFullTextIndexer:
 
     def test_full_text_indexer_raises_file_not_found(self):
         with pytest.raises(FileNotFoundError):
-            full_text_indexer = FullTextIndexer("path_to/non_existent_file.csv")
+            full_text_indexer = LabelledDataSet("path_to/non_existent_file.csv")
             full_text_indexer.index_data()
