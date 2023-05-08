@@ -10,3 +10,7 @@ version = "0.1.0"
 addopts = [
     "--import-mode=importlib",
 ]
+markers = [
+    "focus: marks tests for individual debugging (deselect with '-m \"not focus\"')",
+    "serial",
+]
