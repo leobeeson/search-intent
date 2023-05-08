@@ -3,7 +3,7 @@ import csv
 
 
 from src.indexers.full_text_indexer import FullTextIndexer
-from src.classification_pipeline import ClassificationPipeline
+from src.classifiers.classification_pipeline import ClassificationPipeline
 from src.matchers.raw_string_matcher import RawStringMatcher
 
 
@@ -73,7 +73,6 @@ class TestFullTextIndexer:
     def full_text_indexer_without_data(self, empty_temp_csv):
         return FullTextIndexer(empty_temp_csv)
 
-    @pytest.mark.focus    
     def test_full_text_indexer_when_data_has_rows(self, full_text_indexer_with_data):
         expected = {"sample search query": 257, "another sample search query": 357}
         assert full_text_indexer_with_data.index_data() == expected
