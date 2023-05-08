@@ -2,6 +2,10 @@ import pytest
 from src.matchers.raw_string_matcher import RawStringMatcher
 
 
+class TestClassificationPipeline:
+    pass
+
+
 class TestRawStringMatcher:
 
     @pytest.fixture
@@ -25,3 +29,6 @@ class TestRawStringMatcher:
     def test_raw_string_matcher_remove_query(self, raw_string_matcher):
         raw_string_matcher.remove_query("sample search query")
         assert raw_string_matcher.match("sample search query") is None
+
+    def test_raw_string_matcher_returns_none_when_query_is_none(self, raw_string_matcher):
+        assert raw_string_matcher.match(None) is None
