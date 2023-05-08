@@ -6,7 +6,7 @@
 
 * Classification Pipeline
   * Symbolic classification
-    1. Exact Raw String Matcher
+    1. Exact Raw String Matcher #DONE
     2. `Preprocessing Pipeline`
         * Lowercasing
         * Remove Punctuation
@@ -31,6 +31,8 @@
 
 ### High-Level Design: Modelling
 
+* Trainer
+* Predictor
 * Discrete Space Modelling
   * Keyword Extraction
   * MWE Extraction
@@ -39,3 +41,5 @@
 * Continuous Space Modelling
   * Category Sentence Embeddings
   * Keyword/MWE Word Embedding
+
+## Scratchpad

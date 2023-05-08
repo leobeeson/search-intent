@@ -30,3 +30,9 @@
     ```
 
 5. ...
+
+## Supplying a New Labelled Dataset
+
+## Training
+
+## Classifying
