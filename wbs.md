@@ -24,7 +24,7 @@
     * Sentence Embeddings Matcher
     * Word Embeddings Matcher
 * Ranker
-* Validation Set Evaluator
+* Scorer
 * Test Set Analyser
 
 ## Modelling

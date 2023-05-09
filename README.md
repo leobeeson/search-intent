@@ -45,6 +45,11 @@ python3 main.py augment
 python3 main.py train
 ```
 
+## Validate Classifications
+
+```bash
+python3 main.py validate
+```
 
 ## Classifying
 
