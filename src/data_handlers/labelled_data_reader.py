@@ -1,7 +1,7 @@
 import csv
 
 
-class LabelledDataSet:
+class LabelledDataReader:
     
     
     def __init__(self, filepath: str):
@@ -9,7 +9,7 @@ class LabelledDataSet:
         self.query_index: dict = {}
 
     
-    def index_data(self):
+    def read_labelled_data(self):
         with open(self.filepath, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
