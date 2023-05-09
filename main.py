@@ -6,10 +6,13 @@ import coloredlogs
 
 
 from datetime import datetime
+import pandas as pd
 
 
 from src.app_controllers.trainer import Trainer
 from src.app_controllers.predictor import Predictor
+from src.data_handlers.dataset_augmenter import DatasetAugmenter
+from src.indexers.labelled_data_set import LabelledDataSet
 
 
 logger = logging.getLogger(__name__)
@@ -36,7 +39,7 @@ def load_config():
 def main():
     load_config()
     parser = argparse.ArgumentParser(description="Train or predict using mypkg.")
-    parser.add_argument("mode", choices=["train", "predict"], help="Mode to run the program in.")
+    parser.add_argument("mode", choices=["train", "predict", "augment"], help="Mode to run the program in.")
     parser.add_argument("--filepath", help="Optional file path argument.")
 
     args = parser.parse_args()
@@ -48,6 +51,12 @@ def main():
     elif args.mode == "predict":
         predictor = Predictor()
         predictor.predict()
+    elif args.mode == "augment":
+        train_data_filepath = os.environ["PATH_TRAIN_DATA"]
+        train_data: pd.DataFrame =  pd.read_csv(train_data_filepath, header=None, names=["query", "category"])
+        dataset_augmenter = DatasetAugmenter(train_data)
+        dataset_augmenter.save_augmented_train_data()
+
 
 if __name__ == "__main__":
     main()

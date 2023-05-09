@@ -33,6 +33,21 @@
 
 ## Supplying a New Labelled Dataset
 
+## Data Handling
+
+```bash
+python3 main.py augment
+```
+
 ## Training
 
+```bash
+python3 main.py train
+```
+
+
 ## Classifying
+
+```bash
+python3 main.py predict
+```
