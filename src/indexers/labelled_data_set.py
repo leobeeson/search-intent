@@ -1,12 +1,12 @@
 import csv
 
 
-class FullTextIndexer:
+class LabelledDataSet:
     
     
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.query_index = {}
+    def __init__(self, filepath: str):
+        self.filepath: str = filepath
+        self.query_index: dict = {}
 
     
     def index_data(self):

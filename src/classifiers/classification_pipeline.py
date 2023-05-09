@@ -9,8 +9,7 @@ class ClassificationPipeline:
         
 
     def classify(self, query: str):
-        result = self.exact_raw_string_matcher.match(query)
-        if result is not None:
-            return result
-
+        category = self.exact_raw_string_matcher.match(query)
+        if category is not None:
+            return category
         return None
