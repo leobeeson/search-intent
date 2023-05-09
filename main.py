@@ -1,8 +1,6 @@
 import argparse
 import configparser
 import os
-import logging
-import coloredlogs
 
 
 from datetime import datetime
@@ -12,15 +10,10 @@ import pandas as pd
 from src.app_controllers.trainer import Trainer
 from src.app_controllers.predictor import Predictor
 from src.data_handlers.dataset_augmenter import DatasetAugmenter
-from src.indexers.labelled_data_set import LabelledDataSet
+from src.data_handlers.labelled_data_reader import LabelledDataReader
+from src.loggers.log_utils import setup_logger
 
-
-logger = logging.getLogger(__name__)
-coloredlogs.install(level="DEBUG", logger=logger)
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-file_handler = logging.FileHandler(f"logs/logger_{timestamp}.log")
-file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
-logger.addHandler(file_handler)
+logger = setup_logger("")
 
 
 def load_config():
@@ -39,7 +32,7 @@ def load_config():
 def main():
     load_config()
     parser = argparse.ArgumentParser(description="Train or predict using mypkg.")
-    parser.add_argument("mode", choices=["train", "predict", "augment"], help="Mode to run the program in.")
+    parser.add_argument("mode", choices=["train", "predict", "augment", "validate"], help="Mode to run the program in.")
     parser.add_argument("--filepath", help="Optional file path argument.")
 
     args = parser.parse_args()
@@ -48,6 +41,9 @@ def main():
         trainer = Trainer()
         trainer.split_data()
         trainer.train()
+    elif args.mode == "validate":
+        predictor = Predictor(validate=True)
+        predictions = predictor.predict()
     elif args.mode == "predict":
         predictor = Predictor()
         predictor.predict()
