@@ -5,18 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Split",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "args": ["split", "--no-stratify"]
+        },
+        {
+            "name": "Python: Augment",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "args": ["augment"]
+        },
+        {
             "name": "Python: Validate",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": ["validate"]
-        },
-        {
-            "name": "Python: Split",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/main.py",
-            "args": ["split"]
         }
     ]
 }

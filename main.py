@@ -3,13 +3,8 @@ import configparser
 import os
 
 
-from datetime import datetime
-import pandas as pd
-
-
 from src.app_controllers.trainer import Trainer
 from src.app_controllers.predictor import Predictor
-from src.data_handlers.dataset_augmenter import DatasetAugmenter
 from src.app_controllers.data_handler import DataHandler
 from src.loggers.log_utils import setup_logger
 
@@ -36,13 +31,21 @@ def main():
     parser.add_argument("mode", choices=["split", "train", "predict", "augment", "validate"], help="Mode to run the program in.")
     parser.add_argument("--filepath", help="Optional file path argument.")
     parser.add_argument("--no-stratify", action="store_true", help="Do not stratify the data during the split.")
+    parser.add_argument("--percentile", type=int, default=25, choices=range(1, 101), help="Percentile to use in 'augment' mode. Must be between 1 and 100 (inclusive). Default is 25.")
 
 
     args = parser.parse_args()
 
     if args.mode == "split":
-        data_handler = DataHandler(stratified=not args.no_stratify)
+        data_handler = DataHandler()
+        if args.no_stratify:
+            data_handler.toggle_stratified()
         data_handler.split_labelled_data()
+    elif args.mode == "augment":
+        data_handler = DataHandler()
+        if args.percentile != 25:
+            data_handler.set_augment_percentile(args.percentile)
+        data_handler.augment_train_data()
     elif args.mode == "train":
         trainer = Trainer()
         trainer.split_data()
@@ -58,11 +61,6 @@ def main():
         else:
             predictor = Predictor(args.filepath)
         predictor.predict()
-    elif args.mode == "augment":
-        train_data_filepath = os.environ["PATH_LABELLED_TRAIN_DATA"]
-        train_data: pd.DataFrame =  pd.read_csv(train_data_filepath, header=None, names=["query", "category"])
-        dataset_augmenter = DatasetAugmenter(train_data)
-        dataset_augmenter.save_augmented_train_data()
 
 
 if __name__ == "__main__":

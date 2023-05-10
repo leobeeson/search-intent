@@ -51,10 +51,20 @@ python3 main.py split --no-stratify
 
 ### Augment Train Set
 
+To balance the train set classes, you can augment the train set by increasing its right skewness up to a specified percentile on the distribution of records per category. The default value for the percentile is 25, which means that all categories with less records than the records per category of the category at the 25th percentile will be upsampled (with replacement) up until they reach the same number of records as the category at the 25th percentile.
 
+Instead of balancing the records per category up to a uniform distribution, this augmentation enables strengthening the signal from under-represented classes without significantly dampening the signal from the most representative classes in the data.
+
+To augment the train data with the *default degree* of increased right skewness run:
 
 ```bash
 python3 main.py augment
+```
+
+To augment the train data with with a *different degree* of increased right skewness run, e.g. up to the 50th percentile:
+
+```bash
+python3 main.py augment --percentile 50
 ```
 
 ## Training
@@ -78,3 +88,8 @@ python3 main.py predict
 ## Assumptions
 
 * A query can only be classified to a single category.
+
+## Code Smells
+
+* DataHandler reaches into the attribute of the classes it mediates to modify their attribute values.
+  * Since DataHandler is implemented as a Mediator Pattern, I'm comfortable with this level of coupling at this stage.
