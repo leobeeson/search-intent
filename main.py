@@ -43,7 +43,7 @@ def main():
         trainer.train()
     elif args.mode == "validate":
         predictor = Predictor(validate=True)
-        predictions = predictor.predict()
+        predictor.predict()
     elif args.mode == "predict":
         predictor = Predictor()
         predictor.predict()

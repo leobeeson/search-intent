@@ -1,8 +1,11 @@
 import os
+import re
+import time
 
 
 from src.classifiers.classification_pipeline import ClassificationPipeline
 from src.data_handlers.labelled_data_reader import LabelledDataReader
+from src.data_handlers.unlabelled_data_reader import UnlabelledDataReader
 from src.app_controllers.scorer import Scorer
 from src.loggers.log_utils import setup_logger
 
@@ -27,13 +30,11 @@ class Predictor:
         logger.info("Predicting queries...")
         for query in self.data:
             category: int = self.predict_query(query)
-            if category is None:
-                category = -1
             self.predictions[query] = category
         if self.validate:
             f1_score: float = self.score()
             logger.info(f"F1 score: {f1_score}")
-        return self.predictions
+        self._save_predictions()
 
 
     def predict_query(self, query: str) -> int:
@@ -50,15 +51,42 @@ class Predictor:
 
     def _load_data(self) -> dict[str, int]:
         if self.validate or self.data_filepath is None:
+            logger.warning("No data filepath provided. Loading validation data...")
             self.data_filepath: str = os.environ["PATH_VALIDATION_DATA"]
-        #TODO: Load data from text file for unlabelled (test) data.
-        data_reader: LabelledDataReader = LabelledDataReader(self.data_filepath)    
-        labelled_data: dict[str, int] = data_reader.read_labelled_data()
+            data_reader: LabelledDataReader = LabelledDataReader(self.data_filepath)    
+        else:
+            logger.info("Loading unlabelled test data...")
+            data_reader: UnlabelledDataReader = UnlabelledDataReader(self.data_filepath)
+        labelled_data: dict[str, int] = data_reader.read_data()
         return labelled_data
 
 
     def _load_train_data(self) -> dict[str, int]:
         data_filepath: str = os.environ["PATH_TRAIN_DATA"]
         data_reader: LabelledDataReader = LabelledDataReader(data_filepath)
-        labelled_train_data: dict[str, int] = data_reader.read_labelled_data()
+        labelled_train_data: dict[str, int] = data_reader.read_data()
         return labelled_train_data
+    
+
+    def _save_predictions(self):
+        filename: str = self._filename_to_save_string(self.data_filepath)
+        filepath: str = os.path.join(os.environ["PATH_PREDICTIONS"], filename)
+        logger.info(f"Saving predictions to {filepath}")
+        try:
+            with open(filepath, "w") as csv_file:
+                for query in self.predictions:
+                    category: int = self.predictions[query]
+                    csv_file.write(f"{query},{category}\n")
+            logger.info(f"Predictions saved successfully to {filepath}")
+        except Exception as e:
+            logger.error(f"Failed to save predictions. Exception: {e}")
+         
+    
+    def _filename_to_save_string(self, filepath):
+        base_name = os.path.basename(filepath)
+        name_without_extension, _ = os.path.splitext(base_name)
+        save_string = re.sub(r'\W+', '_', name_without_extension)
+        timestamp = int(time.time())
+        save_string = f"predictions-{timestamp}-{save_string}"
+        return save_string
+
