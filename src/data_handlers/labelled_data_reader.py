@@ -6,12 +6,12 @@ class LabelledDataReader:
     
     def __init__(self, filepath: str):
         self.filepath: str = filepath
-        self.query_index: dict = {}
+        self.labelled_data: dict = {}
 
     
-    def read_labelled_data(self):
+    def read_data(self):
         with open(self.filepath, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                self.query_index[row[0]] = int(row[1])
-        return self.query_index
+                self.labelled_data[row[0]] = int(row[1])
+        return self.labelled_data

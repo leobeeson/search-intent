@@ -10,18 +10,18 @@ from src.app_controllers.predictor import Predictor
 
 
 @pytest.fixture
-def query_index():
+def labelled_data():
     return {"sample search query": 235, "sample search query 2": 237}
 
 
 @pytest.fixture
-def raw_string_matcher(query_index):
-    return RawStringMatcher(query_index)
+def raw_string_matcher(labelled_data):
+    return RawStringMatcher(labelled_data)
 
 
 @pytest.fixture
-def classification_pipeline(query_index):
-    return ClassificationPipeline(query_index)
+def classification_pipeline(labelled_data):
+    return ClassificationPipeline(labelled_data)
 
 
 class TestClassificationPipeline:
@@ -30,10 +30,10 @@ class TestClassificationPipeline:
         assert classification_pipeline.classify("sample search query") == 235
     
     def test_classification_pipeline_returns_none_when_query_does_not_exist_in_index(self, classification_pipeline):
-        assert classification_pipeline.classify("no match") is None
+        assert classification_pipeline.classify("no match") == -1
     
     def test_classification_pipeline_returns_none_when_query_is_none(self, classification_pipeline):
-        assert classification_pipeline.classify(None) is None        
+        assert classification_pipeline.classify(None) == -1
 
 
 class TestRawStringMatcher:
@@ -42,7 +42,7 @@ class TestRawStringMatcher:
         assert raw_string_matcher.match("sample search query") == 235
 
     def test_raw_string_matcher_no_match(self, raw_string_matcher):
-        assert raw_string_matcher.match("no match") is None
+        assert raw_string_matcher.match("no match") == -1
 
     def test_raw_string_matcher_add_query(self, raw_string_matcher):
         raw_string_matcher.add_query("another sample search query", 357)
@@ -50,10 +50,10 @@ class TestRawStringMatcher:
 
     def test_raw_string_matcher_remove_query(self, raw_string_matcher):
         raw_string_matcher.remove_query("sample search query")
-        assert raw_string_matcher.match("sample search query") is None
+        assert raw_string_matcher.match("sample search query") == -1
 
     def test_raw_string_matcher_returns_none_when_query_is_none(self, raw_string_matcher):
-        assert raw_string_matcher.match(None) is None
+        assert raw_string_matcher.match(None) == -1
 
 
 @pytest.fixture(scope="session")
@@ -93,7 +93,7 @@ class TestLabelDataSetReader:
     def test_full_text_indexer_raises_file_not_found(self):
         with pytest.raises(FileNotFoundError):
             labelled_data_reader = LabelledDataReader("path_to/non_existent_file.csv")
-            labelled_data_reader.read_labelled_data()
+            labelled_data_reader.read_data()
 
 
 @pytest.fixture
@@ -164,7 +164,7 @@ class TestPredictor:
         predictor.data = {'query1': 0, 'query2': 1, 'query3': 2}
         
         # Make the classify function return None for query2
-        predictor.classification_pipeline.classify.side_effect = lambda query: None if query == "query2" else int(query[-1])
+        predictor.classification_pipeline.classify.side_effect = lambda query: -1 if query == "query2" else int(query[-1])
         
         predictions = predictor.predict()
         
