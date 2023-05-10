@@ -8,6 +8,7 @@
   * Symbolic classification
     1. Exact Raw String Matcher #DONE
     2. `Preprocessing Pipeline`
+        * Removing whitespace and break/new lines
         * Lowercasing
         * Remove Punctuation
         * SKU Normaliser
