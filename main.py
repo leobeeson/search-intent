@@ -45,7 +45,12 @@ def main():
         predictor = Predictor(validate=True)
         predictor.predict()
     elif args.mode == "predict":
-        predictor = Predictor()
+        if args.filepath is None:
+            logger.warning("No filepath provided for prediction.\nUsing stored test data for predictions.")    
+            data_filepath: str = os.environ["PATH_TEST_DATA"]
+            predictor = Predictor(data_filepath)
+        else:
+            predictor = Predictor(args.filepath)
         predictor.predict()
     elif args.mode == "augment":
         train_data_filepath = os.environ["PATH_TRAIN_DATA"]

@@ -56,3 +56,7 @@ python3 main.py validate
 ```bash
 python3 main.py predict
 ```
+
+## Assumptions
+
+* A query can only be classified to a single category.

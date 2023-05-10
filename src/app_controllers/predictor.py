@@ -87,6 +87,6 @@ class Predictor:
         name_without_extension, _ = os.path.splitext(base_name)
         save_string = re.sub(r'\W+', '_', name_without_extension)
         timestamp = int(time.time())
-        save_string = f"predictions-{timestamp}-{save_string}"
+        save_string = f"predictions-{timestamp}-{save_string}.csv"
         return save_string
 
