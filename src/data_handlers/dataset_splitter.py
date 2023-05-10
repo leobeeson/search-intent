@@ -13,6 +13,7 @@ class DatasetSplitter:
         self.random_state: int = 235
         self.train_data: pd.DataFrame = None
         self.validation_data: pd.DataFrame = None
+        self.test_data: pd.DataFrame = None
 
 
     def split_train_validation_test_sets(self):
@@ -39,3 +40,7 @@ class DatasetSplitter:
         self.train_data.to_csv(os.environ["PATH_LABELLED_TRAIN_DATA"], index=False, header=False)
         self.validation_data.to_csv(os.environ["PATH_LABELLED_VALIDATION_DATA"], index=False, header=False)
         self.test_data.to_csv(os.environ["PATH_LABELLED_TEST_DATA"], index=False, header=False)
+
+
+    def toggle_stratified(self) -> None:
+        self.stratified = not self.stratified

@@ -91,5 +91,13 @@ python3 main.py predict
 
 ## Code Smells
 
-* DataHandler reaches into the attribute of the classes it mediates to modify their attribute values.
-  * Since DataHandler is implemented as a Mediator Pattern, I'm comfortable with this level of coupling at this stage.
+* Trainer is reaching into DataHandler.
+
+## Improvements
+
+* Stream data instead of holding it in memory, so we can scale training and prediction to millions of search queries.
+  * HuggingFace's `DatasetDict` class works with `Arrow` format and use data streaming.
+  * But upstream we're reading and writing whole csv files; this can be improved.
+* Use databases for data IO.
+  * Could use a simple SQLite that comes pre-installed in Linux machines and python has `sqlite3` package out of the box.
+  * My preference would be a NoSQL database, taking into account this application's future features.

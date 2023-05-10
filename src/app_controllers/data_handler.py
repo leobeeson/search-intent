@@ -26,7 +26,7 @@ class DataHandler:
 
 
     def toggle_stratified(self) -> None:
-        self.dataset_splitter.stratified = not self.dataset_splitter.stratified
+        self.dataset_splitter.toggle_stratified()
 
 
     def augment_train_data(self) -> None:
@@ -38,8 +38,8 @@ class DataHandler:
 
 
     def convert_to_arrow(self) -> None:
-        self.arrow_dataset_converter.convert_to_arrow()
+        self.arrow_dataset_converter.convert_data_to_arrow()
     
 
     def toggle_use_augmented(self) -> None:
-        self.arrow_dataset_converter.use_augmented = not self.arrow_dataset_converter.use_augmented
+        self.arrow_dataset_converter.toggle_use_augmented()

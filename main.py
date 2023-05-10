@@ -48,7 +48,7 @@ def main():
         data_handler.augment_train_data()
     elif args.mode == "train":
         trainer = Trainer()
-        trainer.split_data()
+        trainer.build_arrow_dataset()
         trainer.train()
     elif args.mode == "validate":
         predictor = Predictor(validate=True)
