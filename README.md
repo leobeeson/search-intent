@@ -35,6 +35,24 @@
 
 ## Data Handling
 
+### Split Labelled Dataset into Train, Validation, and Test Sets
+
+To split the labelled data set into train, validation, and test. Default splitting is stratified per label category:
+
+```bash
+python3 main.py split
+```
+
+To split the data without stratifying it:
+
+```bash
+python3 main.py split --no-stratify
+```
+
+### Augment Train Set
+
+
+
 ```bash
 python3 main.py augment
 ```

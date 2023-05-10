@@ -52,7 +52,7 @@ class Predictor:
     def _load_data(self) -> dict[str, int]:
         if self.validate or self.data_filepath is None:
             logger.warning("No data filepath provided. Loading validation data...")
-            self.data_filepath: str = os.environ["PATH_VALIDATION_DATA"]
+            self.data_filepath: str = os.environ["PATH_LABELLED_VALIDATION_DATA"]
             data_reader: LabelledDataReader = LabelledDataReader(self.data_filepath)    
         else:
             logger.info("Loading unlabelled test data...")
@@ -62,7 +62,7 @@ class Predictor:
 
 
     def _load_train_data(self) -> dict[str, int]:
-        data_filepath: str = os.environ["PATH_TRAIN_DATA"]
+        data_filepath: str = os.environ["PATH_LABELLED_TRAIN_DATA"]
         data_reader: LabelledDataReader = LabelledDataReader(data_filepath)
         labelled_train_data: dict[str, int] = data_reader.read_data()
         return labelled_train_data
