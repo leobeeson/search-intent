@@ -7,7 +7,7 @@ class RawStringMatcher:
 
 
     def match(self, query):
-        return self.query_index.get(query, None)
+        return self.query_index.get(query, -1)
 
 
     def add_query(self, query, category):

@@ -10,6 +10,6 @@ class ClassificationPipeline:
 
     def classify(self, query: str):
         category = self.exact_raw_string_matcher.match(query)
-        if category is not None:
+        if category >= 0:
             return category
-        return None
+        return category
