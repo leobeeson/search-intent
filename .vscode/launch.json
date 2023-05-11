@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
-            "args": ["split", "--no-stratify"]
+            "args": ["split"] //, "--no-stratify"
         },
         {
             "name": "Python: Augment",
@@ -24,6 +24,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": ["validate"]
+        },
+        {
+            "name": "Python: Evaluate",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "args": ["evaluate", "--model", "distilbert"]
         },
         {
             "name": "Python: Predict",

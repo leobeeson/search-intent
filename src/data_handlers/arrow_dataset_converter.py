@@ -18,7 +18,6 @@ class ArrowDatasetConverter:
         self.validation_data: pd.DataFrame = None
         self.test_data: pd.DataFrame = None
         self.number_distinct_classes: int = None
-        self._load_data()
 
 
     def convert_data_to_arrow(self) -> None:
@@ -34,7 +33,7 @@ class ArrowDatasetConverter:
         logger.info("Successfully converted the labelled data to arrow format. Ready to train.")    
 
 
-    def _load_data(self) -> None:
+    def load_data(self) -> None:
         try:
             if self.use_augmented:
                 self.train_data = pd.read_csv(os.environ["PATH_AUGMENTED_TRAIN_DATA"], header=None, names=["text", "label"])

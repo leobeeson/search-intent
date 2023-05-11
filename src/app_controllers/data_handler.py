@@ -38,6 +38,7 @@ class DataHandler:
 
 
     def convert_to_arrow(self) -> None:
+        self.arrow_dataset_converter.load_data()
         self.arrow_dataset_converter.convert_data_to_arrow()
     
 

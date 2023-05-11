@@ -28,11 +28,11 @@ def load_config():
 def main():
     load_config()
     parser = argparse.ArgumentParser(description="Train or predict using mypkg.")
-    parser.add_argument("mode", choices=["split", "augment", "train", "evaluate", "predict"], help="Mode to run the program in.")
+    parser.add_argument("mode", choices=["split", "augment", "transform", "train", "evaluate", "predict"], help="Mode to run the program in.")
     parser.add_argument("--filepath", help="Optional file path argument.")
     parser.add_argument("--no-stratify", action="store_true", help="Do not stratify the data during the split.")
     parser.add_argument("--percentile", type=int, default=25, choices=range(1, 101), help="Percentile to use in 'augment' mode. Must be between 1 and 100 (inclusive). Default is 25.")
-
+    parser.add_argument("--model", type=str, default="distilbert", choices=["distilbert"], help="The name of the model to evaluate. Default is 'distilbert'.")
 
     args = parser.parse_args()
 
@@ -46,21 +46,26 @@ def main():
         if args.percentile != 25:
             data_handler.set_augment_percentile(args.percentile)
         data_handler.augment_train_data()
+    elif args.mode == "transform":
+        data_handler = DataHandler()
+        data_handler.convert_to_arrow()
     elif args.mode == "train":
         trainer = Trainer()
         trainer.build_arrow_dataset()
         trainer.train()
     elif args.mode == "evaluate":
-        inferer = Inferer()
-        inferer.evaluate_holdout_data()
+        if args.model == "distilbert":
+            inferer = Inferer()
+            inferer.set_up_predictor()
+            inferer.evaluate_holdout_data()
     elif args.mode == "predict":
         inferer = Inferer()
+        inferer.set_up_predictor()
         if args.filepath is None:
             logger.warning("No filepath provided for prediction.\nUsing stored unlabelled test data for predictions.")    
-            inferer.set_up_predictor()
+            inferer.predict_unlabelled_data()
         else:
-            inferer.set_up_predictor(args.filepath)
-        inferer.predict_unlabelled_data()
+            inferer.predict_unlabelled_data(args.filepath)
 
 
 if __name__ == "__main__":

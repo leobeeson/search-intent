@@ -33,6 +33,17 @@
 
 ## Supplying a New Labelled Dataset
 
+You have two options:
+
+1. Replace current labelled data:
+   1. Replace the csv file in `./data/trainSet.csv` with your new dataset.
+   2. **Important**: Make sure your file is also named `trainSet.csv`.
+2. Modify `config.ini` file.
+   1. Open the `./config.ini` file.
+   2. Modify the file path in the line `path_labelled_data = ./data/trainSet.csv`.
+
+Technically you can replace the `trainSet.csv` file with a file with a different name **AND** update the new file name in `config.ini`, but it's not necessary.
+
 ## Data Handling
 
 ### Split Labelled Dataset into Train, Validation, and Test Sets
@@ -67,16 +78,47 @@ To augment the train data with with a *different degree* of increased right skew
 python3 main.py augment --percentile 50
 ```
 
+## Transform Data to DatasetDict Format
+
+We're using the `DatasetDict` class from the `datasets` library to format our data, since it stores data on disk in Arrow format, enabling efficient IO operations. Transformed data is localised at `./data/arrow_cache`.
+
+For future operations, a proper external NoSQL database can be used to store and apply version control to our corpora, but we're storing datasets locally given the scope of the current task.
+
+To transform the split and/or augmented data to a `DatasetDict` class and store on disk in Arrow format:
+
+```bash
+python3 main.py transform
+```
+
 ## Training
+
+To train models ... #TODO
 
 ```bash
 python3 main.py train
 ```
 
-## Validate Classifications
+## Evaluating Models
+
+### Transformer Model
+
+To evaluate distilbert model performance:
 
 ```bash
-python3 main.py validate
+python3 main.py evaluate --model distilbert
+```
+
+Current model evaluates with the following metrics:
+
+```bash
+Evaluation results:
+Accuracy = 0.66
+Macro F1 Score = 0.60
+Weighted F1 Score = 0.64
+Macro Precision = 0.61
+Weighted Precision = 0.65
+Macro Recall = 0.62
+Weighted Recall = 0.66
 ```
 
 ## Classifying
