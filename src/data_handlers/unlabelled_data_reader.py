@@ -6,7 +6,7 @@ class UnlabelledDataReader:
 
     def __init__(self, filepath: str):
         self.filepath: str = filepath
-        self.unlabelled_data: dict[str, int] = {}
+        self.unlabelled_data: list[str] = []
 
 
     def read_data(self):
@@ -24,10 +24,10 @@ class UnlabelledDataReader:
         with open(self.filepath, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                self.unlabelled_data[row[0]] = None
+                self.unlabelled_data.append(row[0])
 
 
     def _read_txt(self):
         with open(self.filepath, "r") as txt_file:
             for line in txt_file:
-                self.unlabelled_data[line.rstrip()] = None
+                self.unlabelled_data.append(line.rstrip())

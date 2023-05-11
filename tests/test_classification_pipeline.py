@@ -6,7 +6,7 @@ import csv
 from src.data_handlers.labelled_data_reader import LabelledDataReader
 from src.classifiers.classification_pipeline import ClassificationPipeline
 from src.matchers.raw_string_matcher import RawStringMatcher
-from src.app_controllers.predictor import Predictor
+from classifiers.symbolic_classifier import Predictor
 
 
 @pytest.fixture

@@ -24,6 +24,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": ["validate"]
+        },
+        {
+            "name": "Python: Predict",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "args": ["predict"]
         }
     ]
 }
