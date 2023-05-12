@@ -2,6 +2,23 @@
 
 `search-intent` is an application for intent understanding of user search queries. Its objective is to identify the most relevant market/product/service category for a given user search query.
 
+## TLDR
+
+1. Run: `git clone git@github.com:leobeeson/search-intent.git`
+2. Create virtual env: `python3 -m venv .venv`
+3. Activate virtual env: `source .venv/bin/activate`
+4. Install Python dependencies: `pip install -r requirements.txt`
+5. Install the project as package in "editable" or "develop" mode (optional, but recommended): `pip install -e .`
+6. Download the labelled Training Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/trainSet.csv) and place it in the `./data` folder.
+7. Download the unlabelled Test Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/candidateTestSet.txt) and place it in the `./data` folder.
+8. Download the transformer model files from [this link](https://distilbert-sequence-classification-ad-queries.s3.eu-west-2.amazonaws.com/distilbert_best_model.zip) and place them in the `./ml_models_best_model` folder.
+9. Split labelled data into train, validation, and test data sets: `python3 main.py split`
+10. Augment low-frequency unbalanced classes in train data set: `python3 main.py augment`
+11. Format train, validation, and test data for passing it into the model: `python3 main.py transform`
+12. Evaluate model with unseen test data: `python3 main.py evaluate --model distilbert`
+13. Predict unlabelled Test Data Set (`candidateTestSet.txt`): `python3 main.py predict`
+14. Retrieve predictions from `./predictions` folder; the predictions filename has a timestamp and the name of its input data file.
+
 ## Content
 
 1. High-level application logical design.
@@ -319,6 +336,7 @@ Optionally:
 
 ## Improvements
 
+* Create a single CLI mode for end-to-end model evaluation, e.g. `python3 main.py -e2e evaluate`, that takes care of splitting, augmenting (could be optional), transforming, and evaluating.
 * Stream data instead of holding it in memory, so we can scale training and prediction to millions of search queries.
   * HuggingFace's `DatasetDict` class works with `Arrow` format and use data streaming.
   * But upstream we're reading and writing whole csv files; this can be improved.
