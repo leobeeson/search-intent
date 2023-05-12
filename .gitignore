@@ -53,6 +53,7 @@ data/*
 !data/arrow_cache/
 data/arrow_cache/*
 !data/arrow_cache/.gitkeep
+data/arrow_cache_dev/*
 
 predictions/*
 !predictions/.gitkeep
