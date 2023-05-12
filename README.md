@@ -32,7 +32,11 @@ The mainline of the application is composed of three mediator components:
 
 ### Project Setup
 
-1. Git clone #FIXME
+1. Clone the project:
+
+    ```bash/powershell/cmd
+    git clone git@github.com:leobeeson/search-intent.git
+    ```
 
 2. Create virtual env:
 
