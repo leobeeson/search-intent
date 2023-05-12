@@ -47,8 +47,15 @@ dist/**
 package.nls.*.json
 l10n/
 
-data/
+data/*
+!data/*dev*
+
+!data/arrow_cache/
+data/arrow_cache/*
+!data/arrow_cache/.gitkeep
+
 logs/
 predictions/
 ml_models/
 indices/
+.env
