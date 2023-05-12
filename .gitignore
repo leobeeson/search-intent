@@ -54,8 +54,14 @@ data/*
 data/arrow_cache/*
 !data/arrow_cache/.gitkeep
 
-logs/
-predictions/
-ml_models/
+predictions/*
+!predictions/.gitkeep
+
+ml_models/*
+!ml_models/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
 indices/
 .env

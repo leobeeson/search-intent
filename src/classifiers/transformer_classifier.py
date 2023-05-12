@@ -70,6 +70,9 @@ class Predictor:
 
     def tokenize_holdout_data(self):
         self.dataset = self.dataset.map(lambda e: self.tokenizer(e['text'], truncation=True, padding='max_length'), batched=True)
+        if self.dataset.num_rows == 0:
+            logger.error("No data in holdout dataset. Did you load the data?\nStratified splitting can cause no rows being left for the test set if initial training set is too small.\nIf this is the case, split the data without stratification like this: python3 main.py split --no-stratify.")
+            raise ValueError("No data in dataset. Did you load the data?")
         self.dataset.set_format(type="torch", columns=["input_ids", "attention_mask", "text", "label"])
 
 
