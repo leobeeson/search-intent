@@ -4,6 +4,7 @@
 
 ## TLDR
 
+0. Run on `python >= 3.9` (tested on 3.9 and 3.10).
 1. Run: `git clone git@github.com:leobeeson/search-intent.git`
 2. Create virtual env: `python3 -m venv .venv`
 3. Activate virtual env: `source .venv/bin/activate`
@@ -11,7 +12,7 @@
 5. Install the project as package in "editable" or "develop" mode (optional, but recommended): `pip install -e .`
 6. Download the labelled Training Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/trainSet.csv) and place it in the `./data` folder.
 7. Download the unlabelled Test Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/candidateTestSet.txt) and place it in the `./data` folder.
-8. Download the transformer model files from [this link](https://distilbert-sequence-classification-ad-queries.s3.eu-west-2.amazonaws.com/distilbert_best_model.zip) and place them in the `./ml_models_best_model` folder.
+8. Download the transformer model files from [this link](https://distilbert-sequence-classification-ad-queries.s3.eu-west-2.amazonaws.com/distilbert_best_model.zip) and place them in the `./ml_models` folder.
 9. Split labelled data into train, validation, and test data sets: `python3 main.py split`
 10. Augment low-frequency unbalanced classes in train data set: `python3 main.py augment`
 11. Format train, validation, and test data for passing it into the model: `python3 main.py transform`
@@ -90,8 +91,21 @@ The mainline of the application is composed of three mediator components:
 ### Downloading the Train and Test Datasets
 
 1. Download the Training Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/trainSet.csv)
+    * If downloading from command line, from the project's root folder:
+  
+    ```bash/zsh
+    cd data
+    wget https://s3-eu-west-1.amazonaws.com/adthena-ds-test/trainSet.csv
+    ```
+
 2. Download the Test Data Set [by clicking here](https://s3-eu-west-1.amazonaws.com/adthena-ds-test/candidateTestSet.txt)
-3. Move both files to the `./data` folder in the project.
+   * If downloading from command line, from the project's root folder:
+  
+    ```bash/zsh
+    wget https://s3-eu-west-1.amazonaws.com/adthena-ds-test/candidateTestSet.txt
+    ```
+
+3. Move both files to the `./data` folder in the project (if you didn't download via command line).
    * Assuming the files were downloaded to your `Downloads` folder:
 
     ```bash/zsh
@@ -129,10 +143,10 @@ The mainline of the application is composed of three mediator components:
     * **Important**: Configuration variables in `./config.ini` point to `trainSet.csv` and `candidateTestSet.txt`.
       * If you want to change `trainSet.csv` and `candidateTestSet.txt` files names, please update the new names in the `./config.ini` file too, in the lines:
 
-        ```config
-        path_labelled_data = ./data/trainSet.csv
-        path_unlabelled_test_data = ./data/candidateTestSet.txt
-        ```
+    ```config
+    path_labelled_data = ./data/trainSet.csv
+    path_unlabelled_test_data = ./data/candidateTestSet.txt
+    ```
 
 ### Using Alternative Datasets
 
@@ -155,8 +169,17 @@ Technically you can replace the `trainSet.csv` file with a file with a different
 ### Downloading the Transformer Model Files
 
 1. Download the transformer model files from [this link](https://distilbert-sequence-classification-ad-queries.s3.eu-west-2.amazonaws.com/distilbert_best_model.zip).
+    * If downloading from command line, from the project's root folder:
+
+    ```bash/zsh
+    cd ml_models
+    wget https://distilbert-sequence-classification-ad-queries.s3.eu-west-2.amazonaws.com/distilbert_best_model.zip
+    unzip distilbert_best_model.zip
+    rm distilbert_best_model.zip 
+    ```
+
 2. Unzip the zipped folder.
-3. Move the unzipped folder to the `./ml_models_best_model` folder in the project:
+3. Move the unzipped folder to the `./ml_models` folder in the project:
    * Assuming you unzipped the file to your `Downloads` folder:
 
     ```bash/zsh
@@ -283,17 +306,17 @@ To evaluate the distilbert model's performance, run:
 python3 main.py evaluate --model distilbert
 ```
 
-The current distilbert model evaluates to the following metrics:
+The distilbert model with the best performance, identified from the hyperparameter search optimization, evaluates to the following metrics:
 
 ```bash
 Evaluation results:
-        Accuracy = 0.63
-        Macro F1 Score = 0.58
-        Weighted F1 Score = 0.62
-        Macro Precision = 0.58
-        Weighted Precision = 0.62
-        Macro Recall = 0.59
-        Weighted Recall = 0.63
+        Accuracy = 0.75
+        Macro F1 Score = 0.71
+        Weighted F1 Score = 0.74
+        Macro Precision = 0.72
+        Weighted Precision = 0.74
+        Macro Recall = 0.71
+        Weighted Recall = 0.75
 ```
 
 ## Classifying Unlabelled Data
